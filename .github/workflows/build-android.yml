@@ -9,24 +9,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Flutter (Stable Version)
+      - name: Set up Flutter (Required Version)
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.16.9'  # 换更稳定的LTS版本，减少兼容性问题
+          flutter-version: '3.44.0'  # 按提示升级到3.44.0，匹配Dart SDK要求
           channel: 'stable'
-          cache: true  # 开启依赖缓存，解决国内下载慢/超时问题
+          cache: true
 
       - name: Get Dependencies
         run: flutter pub get
-        working-directory: ./  # 明确项目根目录，避免路径错误
 
       - name: Build Release APK
-        run: flutter build apk --release --split-per-abi
-        working-directory: ./
+        run: flutter build apk --release
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: EveryTick-APK
           path: build/app/outputs/flutter-apk/app-release.apk
-
